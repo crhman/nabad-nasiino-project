@@ -30,7 +30,12 @@ app.use('/api/journal', require('./routes/journal'));
 app.use('/api/quotes', require('./routes/quotes'));
 
 app.get('/', (req, res) => {
-    res.send('Mental Wellness API is running');
+    const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+    res.json({
+        message: 'Mental Wellness API is running',
+        dbStatus,
+        env: process.env.NODE_ENV
+    });
 });
 
 // Start Server
