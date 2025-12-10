@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Heart, BookOpen, Music, PenTool, LogOut, User } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 import logo from '../assets/logo.jpg';
 
@@ -11,10 +12,25 @@ const Navbar = () => {
     const isAuthenticated = !!localStorage.getItem('token');
 
     const handleLogout = () => {
-        if (window.confirm("Are you sure you want to logout?")) {
-            localStorage.removeItem('token');
-            navigate('/login');
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out of your session.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d9488', // teal-600
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('token');
+                navigate('/login');
+                Swal.fire(
+                    'Logged Out!',
+                    'You have been successfully logged out.',
+                    'success'
+                )
+            }
+        })
     };
 
     const allLinks = [
