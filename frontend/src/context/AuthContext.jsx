@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    console.log('Current API URL:', API_URL); // Debugging log
 
     useEffect(() => {
         const checkLoggedIn = async () => {
