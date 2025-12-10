@@ -4,7 +4,10 @@ require('dotenv').config();
 
 const seedQuotes = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mental-wellness', {
+        const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/mental-wellness';
+        console.log('Connecting to:', uri.includes('localhost') ? 'Localhost' : 'Atlas Cluster');
+
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -63,20 +66,25 @@ const seedQuotes = async () => {
             { text: "The heart that beats for Allah is always a stranger among the hearts that beat for the Dunya.", source: "Islamic Wisdom", category: "Spirituality" },
         ];
 
-        // Generate more quotes to reach 200+
-        const generatedQuotes = [];
-        const categories = ["Remembrance", "Praise", "Gratitude", "Reflection"];
+        const additionalQuotes = [
+            { text: "Truly, man was created anxious; except for those who perform prayer.", source: "Quran 70:19-22", category: "Anxiety" },
+            { text: "Verily, with hardship, there is relief.", source: "Quran 94:5", category: "Hope" },
+            { text: "O Allah, I seek refuge in You from anxiety and sorrow.", source: "Prophet Muhammad (PBUH)", category: "Dua" },
+            { text: "Do not despair of the mercy of Allah. Indeed, Allah forgives all sins.", source: "Quran 39:53", category: "Mercy" },
+            { text: "Allah does not burden any soul with more than it can bear.", source: "Quran 2:286", category: "Strength" },
+            { text: "Be patient, for indeed, the promise of Allah is truth.", source: "Quran 30:60", category: "Patience" },
+            { text: "Only those who endure patiently will be given their reward without limit.", source: "Quran 39:10", category: "Reward" },
+            { text: "Patience is the shield that protects the heart from losing hope.", source: "Islamic Wisdom", category: "Patience" },
+            { text: "When you are patient, Allah increases your strength and faith.", source: "Islamic Wisdom", category: "Faith" },
+            { text: "Every trial has a purpose.", source: "Islamic Wisdom", category: "Perspective" },
+            { text: "Allah can change the most hopeless situation into the best moment in your life.", source: "Islamic Wisdom", category: "Hope" },
+            { text: "Have hope. Allah is always near.", source: "Islamic Wisdom", category: "Comfort" },
+            { text: "The heart finds peace with Allah.", source: "Islamic Wisdom", category: "Peace" },
+            { text: "Sabr is not how long you wait, but how you behave while waiting.", source: "Islamic Wisdom", category: "Character" },
+            { text: "O you who have believed, seek help through patience and prayer.", source: "Quran 2:153", category: "Guidance" }
+        ];
 
-        for (let i = 0; i < 160; i++) {
-            const category = categories[i % categories.length];
-            generatedQuotes.push({
-                text: `O Allah, help me to remember You, to thank You, and to worship You in the best of manners. (Reflection #${i + 1})`,
-                source: "Daily Dhikr",
-                category: category
-            });
-        }
-
-        const allQuotes = [...quranVerses, ...hadiths, ...islamicQuotes, ...generatedQuotes];
+        const allQuotes = [...quranVerses, ...hadiths, ...islamicQuotes, ...additionalQuotes];
 
         await Quote.insertMany(allQuotes);
         console.log(`Seeded ${allQuotes.length} quotes successfully.`);
