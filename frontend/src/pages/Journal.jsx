@@ -12,6 +12,7 @@ const Journal = () => {
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
     useEffect(() => {
         if (!token) {
@@ -23,7 +24,7 @@ const Journal = () => {
 
     const fetchEntries = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/journal', {
+            const res = await axios.get(`${API_URL}/journal`, {
                 headers: { 'x-auth-token': token }
             });
             setEntries(res.data);
@@ -39,7 +40,7 @@ const Journal = () => {
         if (!newEntry.trim()) return;
 
         try {
-            const res = await axios.post('http://localhost:5000/api/journal', {
+            const res = await axios.post(`${API_URL}/journal`, {
                 content: newEntry,
                 mood
             }, {
@@ -57,7 +58,7 @@ const Journal = () => {
 
     const deleteEntry = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/journal/${id}`, {
+            await axios.delete(`${API_URL}/journal/${id}`, {
                 headers: { 'x-auth-token': token }
             });
             setEntries(entries.filter((e) => e._id !== id));

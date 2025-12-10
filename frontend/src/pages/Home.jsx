@@ -32,7 +32,8 @@ const Home = () => {
                     setDailyQuote(JSON.parse(storedQuote));
                 } else {
                     // Fetch new quote if not stored or expired
-                    const res = await fetch('http://localhost:5000/api/quotes/random');
+                    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                    const res = await fetch(`${API_URL}/quotes/random`);
                     const data = await res.json();
                     setDailyQuote(data);
                     localStorage.setItem('dailyQuote', JSON.stringify(data));

@@ -22,7 +22,8 @@ const Quotes = () => {
     const generateQuote = async () => {
         try {
             // Try to fetch from backend
-            const res = await axios.get('http://localhost:5000/api/quotes/random');
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const res = await axios.get(`${API_URL}/quotes/random`);
             if (res.data) {
                 setCurrentQuote(res.data);
             } else {
